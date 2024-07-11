@@ -11,6 +11,8 @@ cd /home/gem5/spec2017
 source shrc
 m5 readfile > workloads
 echo "Done reading workloads"
+workload="500.perlbench_r"
+size="test"
 if [ -s workloads ]; then
     # if the file is not empty, run spec with the parameters
     echo "Workload detected"
@@ -24,7 +26,7 @@ if [ -s workloads ]; then
         RUN_PATH="run_base_refrate_mytest-m64.0000"
     elif [ $size = "test" ]; then
         RUN_PATH="run_base_test_mytest-m64.0000"
-    if [ $size = "train" ]; then
+    elif [ $size = "train" ]; then
         RUN_PATH="run_base_train_mytest-m64.0000"
         echo "Currently sole-run mode does not support train arguments"
         m5 exit
@@ -154,7 +156,7 @@ if [ -s workloads ]; then
         m5 exit
         m5 exit
     fi
-    
+ 
     go $workload run
     cd $RUN_PATH
 
