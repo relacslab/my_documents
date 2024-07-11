@@ -76,7 +76,7 @@ if [ -s workloads ]; then
     fi
 
     echo "Run workload as: ./$workload $ARGS"
-    './'$workload' '$ARGS
+    ./$workload $ARGS
 
     m5 exit
     m5 exit
