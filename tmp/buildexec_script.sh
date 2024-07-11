@@ -2,7 +2,6 @@ CONFIG_NAME=myconfig.x86.cfg
 CPU_HOME_DIR=/home/gem5/spec2017
 CPU_BASE_DIR=$CPU_HOME_DIR'/benchspec/CPU'
 BUILD_BASE_DIR=build/build_base_mytest-m64.0000
-RUN_BASE_DIR=run/run_base_refrate_mytest-m64.0000
 BUILD_CPU_ARG=
 BENCHMARK_NAME=
 
@@ -82,6 +81,7 @@ do
         BUILD_CPU_ARG=''
     fi
 
+    runcpu --fake --loose --size test --tune base --config $CONFIG_NAME $BENCHMARK_NAME
     runcpu --fake --loose --size ref --tune base --config $CONFIG_NAME $BENCHMARK_NAME
     cd $CPU_BASE_DIR'/'$BENCHMARK_NAME'/'$BUILD_BASE_DIR
     specmake $BUILD_CPU_ARG clean
@@ -91,8 +91,18 @@ do
         BUILD_CPU_ARG='TARGET=ldecod_r'
         specmake $BUILD_CPU_ARG clean
         specmake $BUILD_CPU_ARG -j4
+
+        RUN_BASE_DIR=run/run_base_refrate_mytest-m64.0000
         ./ldecod_r -i $CPU_BASE_DIR'/'$BENCHMARK_NAME'/data/refrate/input/BuckBunny.264' -o $CPU_BASE_DIR'/'$BENCHMARK_NAME'/'$RUN_BASE_DIR'/BuckBunny.yuv'
+        
+        RUN_BASE_DIR=run/run_base_test_mytest-m64.0000
+        ./ldecod_r -i $CPU_BASE_DIR'/'$BENCHMARK_NAME'/data/test/input/BuckBunny.264' -o $CPU_BASE_DIR'/'$BENCHMARK_NAME'/'$RUN_BASE_DIR'/BuckBunny.yuv'
     elif [ $BENCHMARK_NAME == "549.fotonik3d_r" ]; then
+        RUN_BASE_DIR=run/run_base_refrate_mytest-m64.0000
+        cd $CPU_BASE_DIR'/'$BENCHMARK_NAME'/'$RUN_BASE_DIR
+        xz OBJ.dat.xz
+
+        RUN_BASE_DIR=run/run_base_test_mytest-m64.0000
         cd $CPU_BASE_DIR'/'$BENCHMARK_NAME'/'$RUN_BASE_DIR
         xz OBJ.dat.xz
     fi

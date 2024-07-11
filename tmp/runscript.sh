@@ -18,10 +18,14 @@ if [ -s workloads ]; then
 
     # run the commands
     read -r workload size m5filespath < workloads
-    go $workload run
-    cd ./run_base_refrate_mytest-m64.0000
 
+    RUN_PATH=
+    if [ $size = "ref" ]; then
+        RUN_PATH="run_base_refrate_mytest-m64.0000"
+    elif [ $size = "test" ]; then
+        RUN_PATH="run_base_test_mytest-m64.0000"
     if [ $size = "train" ]; then
+        RUN_PATH="run_base_train_mytest-m64.0000"
         echo "Currently sole-run mode does not support train arguments"
         m5 exit
         m5 exit
@@ -33,7 +37,7 @@ if [ -s workloads ]; then
         if [ $size = "ref" ]; then
             ARGS="-I./lib diffmail.pl 4 800 10 17 19 300"
         elif [ $size = "test" ]; then
-            ARGS="-I./lib test.pl" 
+            ARGS="-I. -I./lib test.pl" 
         fi
     elif [ $workload = "502.gcc_r" ]; then
         if [ $size = "ref" ]; then
@@ -42,11 +46,7 @@ if [ -s workloads ]; then
             ARGS="t1.c -O3 -finline-limit=50000 -o t1.opts-O3_-finline-limit_50000.s"
         fi
     elif [ $workload = "503.bwaves_r" ]; then
-        if [ $size = "ref" ]; then
-            ARGS="bwaves_1 < bwaves_1.in"
-        elif [ $size = "test" ]; then
-            ARGS="bwaves_3 < bwaves_3.in"
-        fi
+        ARGS="bwaves_1 < bwaves_1.in"
     elif [ $workload = "505.mcf_r" ]; then
         ARGS="inp.in"
     elif [ $workload = "507.cactuBSSN_r" ]; then
@@ -154,9 +154,13 @@ if [ -s workloads ]; then
         m5 exit
         m5 exit
     fi
+    
+    go $workload run
+    cd $RUN_PATH
 
     workload=$(echo $workload | sed 's/^[0-9.]*//')
     echo "Run workload as: ./$workload $ARGS"
+
     m5 exit
     ./$workload $ARGS
 
