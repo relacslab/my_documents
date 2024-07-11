@@ -20,7 +20,6 @@ if [ -s workloads ]; then
     read -r workload size m5filespath < workloads
     go $workload run
     cd ./run_base_refrate_mytest-m64.0000
-    m5 exit
 
     ARGS=
     if [ $workload = perlbench_r ]; then
@@ -73,9 +72,11 @@ if [ -s workloads ]; then
         echo "Invalid workload selected. Terminate"
         m5 exit
         m5 exit
+        m5 exit
     fi
 
     echo "Run workload as: ./$workload $ARGS"
+    m5 exit
     ./$workload $ARGS
 
     m5 exit
