@@ -1,8 +1,8 @@
 CONFIG_NAME=myconfig.x86.cfg
 CPU_HOME_DIR=/home/gem5/spec2017
 CPU_BASE_DIR=$CPU_HOME_DIR'/benchspec/CPU'
-BUILD_BASE_DIR=build/build_base_myconfig-cpu-m64.0000
-RUN_BASE_DIR=run/run_base_refrate_hklee-cpu-m64.0000
+BUILD_BASE_DIR=build/build_base_mytest-m64.0000
+RUN_BASE_DIR=run/run_base_refrate_mytest-m64.0000
 BUILD_CPU_ARG=
 BENCHMARK_NAME=
 
