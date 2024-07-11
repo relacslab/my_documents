@@ -22,51 +22,51 @@ if [ -s workloads ]; then
     cd ./run_base_refrate_mytest-m64.0000
 
     ARGS=
-    if [ $workload = perlbench_r ]; then
+    if [ $workload = "500.perlbench_r" ]; then
         ARGS="-I./lib diffmail.pl 4 800 10 17 19 300"
-    elif [ $workload = gcc_r ]; then
+    elif [ $workload = "502.gcc_r" ]; then
         ARGS="ref32.c -O3 -fselective-scheduling -fselective-scheduling2 -o ref32.opts-O3_-fselective-scheduling_-fselective-scheduling2.s"
-    elif [ $workload = bwaves_r ]; then
+    elif [ $workload = "503.bwaves_r" ]; then
         ARGS="< bwaves_1.in"
-    elif [ $workload = mcf_r ]; then
+    elif [ $workload = "505.mcf_r" ]; then
         ARGS="inp.in"
-    elif [ $workload = cactuBSSN_r ]; then
+    elif [ $workload = "507.cactuBSSN_r" ]; then
         ARGS="spec_ref.par"
-    elif [ $workload = namd_r ]; then
+    elif [ $workload = "508.namd_r" ]; then
         ARGS="--input apoa1.input --output apoa1.ref.output --iterations 65"
-    elif [ $workload = parest_r ]; then
+    elif [ $workload = "510.parest_r" ]; then
         ARGS="ref.prm"
-    elif [ $workload = povray_r ]; then
+    elif [ $workload = "511.povray_r" ]; then
         ARGS="SPEC-benchmark-ref.ini"
-    elif [ $workload = lbm_r ]; then
+    elif [ $workload = "519.lbm_r" ]; then
         ARGS="3000 reference.dat 0 0 100_100_130_ldc.of"
-    elif [ $workload = omnetpp_r ]; then
+    elif [ $workload = "520.omnetpp_r" ]; then
         ARGS="-c General -r 0"
-    elif [ $workload = wrf_r ]; then
+    elif [ $workload = "521.wrf_r" ]; then
         ARGS="" 
-    elif [ $workload = xalancbmk_r ]; then
+    elif [ $workload = "523.xalancbmk_r" ]; then
         ARGS="-v t5.xml xalanc.xsl"
-    elif [ $workload = x264_r ]; then
+    elif [ $workload = "525.x264_r" ]; then
         ARGS="--pass 1 --stats x264_stats.log --bitrate 1000 --frames 1000 -o BuckBunny_New.264 BuckBunny.yuv 1280x720"
-    elif [ $workload = blender_r ]; then
+    elif [ $workload = "526.blender_r" ]; then
         ARGS="sh3_no_char.blend --render-output sh3_no_char_ --threads 1 -b -F RAWTGA -s 849 -e 849 -a"
-    elif [ $workload = cam4_r ]; then
+    elif [ $workload = "527.cam4_r" ]; then
         ARGS=""
-    elif [ $workload = deepsjeng_r ]; then
+    elif [ $workload = "531.deepsjeng_r" ]; then
         ARGS="ref.txt"
-    elif [ $workload = imagick_r ]; then
+    elif [ $workload = "538.imagick_r" ]; then
         ARGS="-limit disk 0 refrate_input.tga -edge 41 -resample 181% -emboss 31 -colorspace YUV -mean-shift 19x19+15% -resize 30% refrate_output.tga"
-    elif [ $workload = leela_r ]; then
+    elif [ $workload = "541.leela_r" ]; then
         ARGS="ref.sgf"
-    elif [ $workload = nab_r ]; then
+    elif [ $workload = "544.nab_r" ]; then
         ARGS="1am0 1122214447 122"
-    elif [ $workload = exchange2_r ]; then
+    elif [ $workload = "548.exchange2_r" ]; then
         ARGS="6"
-    elif [ $workload = fotonik3d_r ]; then
+    elif [ $workload = "549.fotonik3d_r" ]; then
         ARGS=""
-    elif [ $workload = roms_r ]; then
+    elif [ $workload = "554.roms_r" ]; then
         ARGS="< ocean_benchmark2.in.x"
-    elif [ $workload = xz_r ]; then
+    elif [ $workload = "557.xz_r" ]; then
         ARGS="input.combined.xz 250 a841f68f38572a49d86226b7ff5baeb31bd19dc637a922a972b2e6d1257a890f6a544ecab967c313e370478c74f760eb229d4eef8a8d2836d233d3e9dd1430bf 40401484 41217675 7"
     else
         echo "Invalid workload selected. Terminate"
@@ -75,6 +75,7 @@ if [ -s workloads ]; then
         m5 exit
     fi
 
+    workload=$(echo $workload | sed 's/^[0-9.]*//')
     echo "Run workload as: ./$workload $ARGS"
     m5 exit
     ./$workload $ARGS
