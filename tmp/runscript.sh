@@ -11,8 +11,6 @@ cd /home/gem5/spec2017
 source shrc
 m5 readfile > workloads
 echo "Done reading workloads"
-workload="500.perlbench_r"
-size="test"
 if [ -s workloads ]; then
     # if the file is not empty, run spec with the parameters
     echo "Workload detected"
