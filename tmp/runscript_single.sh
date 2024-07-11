@@ -50,7 +50,7 @@ if [ -s workloads ]; then
     elif [ $workload = x264_r ]; then
         ARGS="--pass 1 --stats x264_stats.log --bitrate 1000 --frames 1000 -o BuckBunny_New.264 BuckBunny.yuv 1280x720"
     elif [ $workload = blender_r ]; then
-        ARGS="sh_no_char.blend --render-output sh3_no_char_ --threads 1 -b -F RAWTGA -s 849 -e 849 -a"
+        ARGS="sh3_no_char.blend --render-output sh3_no_char_ --threads 1 -b -F RAWTGA -s 849 -e 849 -a"
     elif [ $workload = cam4_r ]; then
         ARGS=""
     elif [ $workload = deepsjeng_r ]; then
