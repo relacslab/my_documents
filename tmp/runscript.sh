@@ -33,6 +33,7 @@ if [ -s workloads ]; then
     fi
 
     ARGS=
+    IFILE=
     OFILE_PREFIX=
     if [ $workload = "500.perlbench_r" ]; then
         if [ $size = "ref" ]; then
@@ -51,7 +52,8 @@ if [ -s workloads ]; then
             OFILE_PREFIX="t1.opts-O3_-finline-limit_50000"
         fi
     elif [ $workload = "503.bwaves_r" ]; then
-        ARGS="bwaves_1 < bwaves_1.in"
+        ARGS="bwaves_1"
+        IFILE="bwaves_1.in"
         OFILE_PREFIX="bwaves_1"
     elif [ $workload = "505.mcf_r" ]; then
         ARGS="inp.in"
@@ -173,11 +175,12 @@ if [ -s workloads ]; then
         ARGS=""
         OFILE_PREFIX="fotonik3d"
     elif [ $workload = "554.roms_r" ]; then
+        ARGS=""
         if [ $size = "ref" ]; then
-            ARGS="< ocean_benchmark2.in.x"
+            IFILE="ocean_benchmark2.in.x"
             OFILE_PREFIX="ocean_benchmark2"
         elif [ $size = "test" ]; then
-            ARGS="< ocean_benchmark0.in.x"
+            IFILE="ocean_benchmark0.in.x"
             OFILE_PREFIX="ocean_benchmark0"
         fi
     elif [ $workload = "557.xz_r" ]; then
@@ -206,8 +209,11 @@ if [ -s workloads ]; then
     echo "Run workload as: ./$workload $ARGS"
 
     m5 exit
-    ./$workload $ARGS > $OFILE_PREFIX".out" 2> $OFILE_PREFIX".err"
-
+    if [ -z $IFILE ]; then
+        ./$workload $ARGS > $OFILE_PREFIX".out" 2> $OFILE_PREFIX".err"
+    else
+        ./$workload $ARGS < $IFILE > $OFILE_PREFIX".out" 2> $OFILE_PREFIX".err"
+    fi
     m5 exit
     for filepath in $(pwd)/*; do
         filename=$(basename $filepath)
