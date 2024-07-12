@@ -49,7 +49,7 @@ do
     elif [ $i -eq 13 ]; then
         BENCHMARK_NAME=525.x264_r
         BUILD_CPU_ARG='TARGET=x264_r'
-    elif [ $i -eq 14 ]; then
+    elif [ $i -eq 14 ]; then # cannot build for Ubuntu 18.04 with ver 1.0.2
         BENCHMARK_NAME=526.blender_r
         BUILD_CPU_ARG='TARGET=blender_r'
     elif [ $i -eq 15 ]; then
