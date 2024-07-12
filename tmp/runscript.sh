@@ -7,7 +7,8 @@
 # which contains the workload and the size to run. Then it resets the stats before running the workload.
 # Finally, it exits the simulation after running the workload, then it copies out the result file to be checked.
 
-cd /home/gem5/spec2017
+SPEC_HOME="/home/gem5/spec2017"
+cd $SPEC_HOME
 source shrc
 m5 readfile > workloads
 echo "Done reading workloads"
@@ -200,25 +201,30 @@ if [ -s workloads ]; then
         m5 exit
     fi
 
-    echo "Enter root run directory of $workload"
-    go $workload run
-    echo "Enter $RUN_PATH to run $workload"
+    RUN_PATH=$SPEC_HOME"/benchspec/CPU/"$workload"/run/"$RUN_PATH
     cd $RUN_PATH
-
-    workload=$(echo $workload | sed 's/^[0-9.]*//')
-    echo "Run workload as: ./$workload $ARGS"
-
+    workload=$(printf $workload | sed 's/^[0-9.]*//')
+    echo "Run $workload in $size mode"
+    
     m5 exit
+
     if [ -z $IFILE ]; then
         ./$workload $ARGS > $OFILE_PREFIX".out" 2> $OFILE_PREFIX".err"
     else
         ./$workload $ARGS < $IFILE > $OFILE_PREFIX".out" 2> $OFILE_PREFIX".err"
     fi
-    m5 exit
-    for filepath in $(pwd)/*; do
+
+    echo "Complete run"
+    m5 exit 
+
+    for filepath in $RUN_PATH/*; do
         filename=$(basename $filepath)
-        m5 writefile $filepath $m5filespath/$filename
-    done 
+	if [ $filename == $OFILE_PREFIX".out" ] || [ $filename == $OFILE_PREFIX".err" ]; then
+	    m5 writefile $filepath $m5filespath/$filename
+        fi
+    done
+ 
+    echo "Exit simulation"
     m5 exit
 else
     echo "Couldn't find any workload"
